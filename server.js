@@ -6,8 +6,42 @@ const express = require('express');
 
 const app = express();
 
+app.get('/',(req,resp) => {
+    resp.sendFile('./views/index.html',{ root : __dirname })
+})
+
+app.get('/about',(req,resp) => {
+    resp.sendFile('./views/about.html',{ root : __dirname })
+})
+
+let path = './views/'
+
+//const extractor = path.substr(8,path.length).split('.')[0];
+
+//onsole.log(extractor);
+
+app.get('/',(req,resp) => {
+    resp.sendFile('./views/index.html',{ root : __dirname });
+})
+
+app.get('/about',(req,resp) => {
+    resp.sendFile('./views/about.html',{ root : __dirname });
+})
+
+app.use((req,resp) => {
+    if(req.url.includes(extractor) && req.url !== `/${extractor}`){
+        resp.redirect(`/${extractor}`)
+    }
+    resp.status(404).sendFile('/views/404.html', { root : __dirname })
+})
 
 app.listen(Port);
+
+/*app.use((req,resp) => {
+    if(req.url.includes(extractor) && req.url !== `/${extractor}`){
+        resp.redirect(`/${extractor}`)
+    }
+})*/
 
 /*const http = require('http');
 
