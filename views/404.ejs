@@ -7,11 +7,7 @@
 </head>
 <body>
     <% const statusCode = 404 %>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/create">New blog</a>
-    </nav>
+    <%- include('./partials/nav.ejs') %>
     <h1>Check your internet connection! <%= statusCode %> </h1>
 </body>
 </html>

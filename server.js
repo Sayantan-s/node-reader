@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const Port = 4000
+const Port = 5000
 
 const express = require('express');
 
@@ -25,13 +25,19 @@ app.set('view engine','ejs');
 app.get('/',(req,resp) => {
     //resp.sendFile('./views/index.html',{ root : __dirname });
 
-    resp.render('index');
+    const blogs = [
+        { header : 'Toggle switch with framer motion',content : 'Hello folks,in this blog I am here to give a brief idea on how to build a framer motion toggle switch'},
+        { header : 'Drag Scroll with locomotive scroll',content : 'Building the scroll.....'},
+        { header : 'Building a diamond with React three fiber',content : 'Building something cool'}
+    ]
+
+    resp.render('index',{ title : 'Home',blContent: blogs});
 })
 
 app.get('/about',(req,resp) => {
     //resp.sendFile('./views/about.html',{ root : __dirname });
 
-    resp.render('about');
+    resp.render('about',{ title : 'about' }); 
 })
 
 app.use((req,resp) => {

@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <%- include('./partials/title.ejs') %>
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/create">New blog</a>
-    </nav>
     <h1>Hello from Home</h1>
+    <%- include('./partials/nav.ejs') %>
+    <h2>Blogs</h2>
+    <div>
+        <% if(blContent){ %>
+            <% blContent.forEach(({header,content}) => { %>
+                <h3>
+                    <%= header %>
+                </h3>
+                <p>
+                    <%= content %>
+                </p>
+            <% }) %>
+        <% } %>
+    </div>
 </body>
 </html>

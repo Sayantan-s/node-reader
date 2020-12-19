@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Framer Blog | <%= title %></title>
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/create">New blog</a>
-    </nav>
+    <%- include('./partials/nav.ejs') %>
     <h1>Hello from about</h1>
 </body>
 </html>
