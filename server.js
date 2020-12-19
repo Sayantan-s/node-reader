@@ -6,13 +6,13 @@ const express = require('express');
 
 const app = express();
 
-app.get('/',(req,resp) => {
+/*app.get('/',(req,resp) => {
     resp.sendFile('./views/index.html',{ root : __dirname })
 })
 
 app.get('/about',(req,resp) => {
     resp.sendFile('./views/about.html',{ root : __dirname })
-})
+})*/
 
 let path = './views/'
 
@@ -20,19 +20,22 @@ let path = './views/'
 
 //onsole.log(extractor);
 
+app.set('view engine','ejs');
+
 app.get('/',(req,resp) => {
-    resp.sendFile('./views/index.html',{ root : __dirname });
+    //resp.sendFile('./views/index.html',{ root : __dirname });
+
+    resp.render('index');
 })
 
 app.get('/about',(req,resp) => {
-    resp.sendFile('./views/about.html',{ root : __dirname });
+    //resp.sendFile('./views/about.html',{ root : __dirname });
+
+    resp.render('about');
 })
 
 app.use((req,resp) => {
-    if(req.url.includes(extractor) && req.url !== `/${extractor}`){
-        resp.redirect(`/${extractor}`)
-    }
-    resp.status(404).sendFile('/views/404.html', { root : __dirname })
+    resp.status(404).render('404')
 })
 
 app.listen(Port);

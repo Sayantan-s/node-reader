@@ -6,6 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Check your internet connection!</h1>
+    <% const statusCode = 404 %>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/create">New blog</a>
+    </nav>
+    <h1>Check your internet connection! <%= statusCode %> </h1>
 </body>
 </html>
