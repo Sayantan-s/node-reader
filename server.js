@@ -6,6 +6,8 @@ const express = require('express');
 
 const app = express();
 
+const morgan = require('morgan');
+
 /*app.get('/',(req,resp) => {
     resp.sendFile('./views/index.html',{ root : __dirname })
 })
@@ -21,6 +23,16 @@ let path = './views/'
 //onsole.log(extractor);
 
 app.set('view engine','ejs');
+
+app.use(morgan('dev'));
+
+app.use(express.static('styles'))
+
+app.use(({path,url},resp,next) => {
+    console.log(path === url); 
+    morgan('dev');
+    next();
+})
 
 app.get('/',(req,resp) => {
     //resp.sendFile('./views/index.html',{ root : __dirname });
@@ -38,10 +50,6 @@ app.get('/about',(req,resp) => {
     //resp.sendFile('./views/about.html',{ root : __dirname });
 
     resp.render('about',{ title : 'about' }); 
-})
-
-app.use((req,resp) => {
-    resp.status(404).render('404')
 })
 
 app.listen(Port);
