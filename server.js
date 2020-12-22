@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const Port = 5000
 
 const express = require('express');
@@ -26,7 +24,8 @@ let path = './views/'
 
 //onsole.log(extractor);
 
-const dbURI = `mongodb+srv://sayan_07:Sayantan123@nodeblog.zc13y.mongodb.net/sayansblog?retryWrites=true&w=majority`;
+const dbURI = `mongodb+srv://sayan_07:Sayantan123@nodeblog.zc13y.mongodb.net/sayansblog?retryWrites=true&w=majority`
+
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
     .then(res => {
@@ -44,6 +43,9 @@ app.use(morgan('dev'));
 
 app.use(express.static('styles'))
 
+app.use(express.urlencoded({ extended : true }))
+
+
 app.use(({path,url},resp,next) => {
     console.log(path === url); 
     morgan('dev');
@@ -53,21 +55,49 @@ app.use(({path,url},resp,next) => {
 
 app.get('/',(req,resp) => {
     //resp.sendFile('./views/index.html',{ root : __dirname });
-
-    const blogs = [
-        { header : 'Toggle switch with framer motion',content : 'Hello folks,in this blog I am here to give a brief idea on how to build a framer motion toggle switch'},
-        { header : 'Drag Scroll with locomotive scroll',content : 'Building the scroll.....'},
-        { header : 'Building a diamond with React three fiber',content : 'Building something cool'}
-    ]
-
-    resp.render('index',{ title : 'Home',blContent: blogs});
+    resp.redirect('/blog')
 })
 
-app.get('/blog-api',(req,res) => {
+app.get('/create-blog',(req,resp) => {
+    resp.render('createblog',{ title : 'createblog' })
+})
+
+app.get('/blog',(req,resp) => {
+    Blog.find().sort({ createdAt : -1 }) 
+        .then(result => {
+            resp.render('index',{ title : 'Blogs',blogs : result });
+            console.log(result);
+        })
+        .catch(err => console.log(err));
+})
+
+app.post('/blog',(req,resp) => {
+    const blog = new Blog(req.body);
+
+    blog.save()
+        .then(result => {
+            console.log(result);
+            resp.redirect('/blog')
+        })
+        .catch(err => console.log(err));
+})
+
+app.get('/blog/:id',(req,resp) => {
+    const { params : { id } } = req
+    Blog.findById(id)
+        .then(res => {
+            resp.render('id',{ title : `blog ${id}`,blog : res })
+            console.log(res);
+        })
+        .catch(err => console.log(err));
+})
+
+
+/*app.get('/blog-api',(req,res) => {
     const blogitem = new Blog({
-        title : 'Toggle switch with framer motion',
-        subhead : 'Framer motion',
-        content : 'Hello folks,in this blog I am here to give a brief idea on how to build a framer motion toggle switch'
+        title : 'Drag scroll with locomotive scroll',
+        subhead : 'Locomotive scroll',
+        content : 'Hello folks,in this blog I am here to give a brief idea on how to build a scroll-x direction blog using Locomotive scroll.'
     })
 
     blogitem.save()
@@ -78,11 +108,32 @@ app.get('/blog-api',(req,res) => {
         .catch(err => console.log(err));
 })
 
+app.get('/all-blogs',(req,resp) => {
+    Blog.find()
+        .then(result => {
+            resp.send(result);
+            console.log('Find all blogs')
+        })
+        .catch(err => console.log(err));
+})
+
+app.get('/blog-5fe1b1cc0c54265f0a60d4ac',(req,resp) => {
+    Blog.findById('5fe1b1cc0c54265f0a60d4ac')
+        .then(result  => {
+            resp.send(result);
+        })
+        .catch(err => console.log(err));
+})
+*/
 app.get('/about',(req,resp) => {
     //resp.sendFile('./views/about.html',{ root : __dirname });
 
     resp.render('about',{ title : 'about' }); 
 })
+
+app.use((req,resp) => {
+    resp.status(404).render('404',{ title : '404'})
+}) 
 
 /*app.use((req,resp) => {
     if(req.url.includes(extractor) && req.url !== `/${extractor}`){

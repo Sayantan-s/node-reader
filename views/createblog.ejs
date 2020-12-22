@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/title.ejs') %>
+    <link rel="stylesheet" href="/blogstyles.css">
+<body>
+    
+    <%- include('./partials/nav.ejs') %>
+
+    <form action="/blog" method="POST">
+        <input 
+        type="text"
+        placeholder="Title"
+        name="title"
+        >
+        <input 
+        type="text"
+        placeholder="Library"
+        name="subhead"
+        >
+        <textarea rows="4"
+        placeholder="Content"
+        name="content"></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html>
